@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TodoList from '../../components/TodoList';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import queryString from 'query-string';
+import TodoForm from '../../components/TodoForm';
 
 ListPage.propTypes = {};
 
@@ -81,8 +82,21 @@ function ListPage(props) {
     return todoList.filter((todo) => filteredStatus === 'all' || filteredStatus === todo.status);
   }, [todoList, filteredStatus]);
   // console.log(renderedTodolist);
+
+  const handleTodoFormSubmid = (values) => {
+    console.log('Form submit: ', values);
+    const newTodo = {
+      id: todoList.length + 1,
+      title: values.title,
+      status: 'new',
+    };
+    const newTodoList = [...todoList, newTodo];
+    setTodoList(newTodoList);
+  };
   return (
     <div>
+      <h3> What to do</h3>
+      <TodoForm onSubmit={handleTodoFormSubmid} />
       <h3>Todo List</h3>
       <TodoList todoListt={renderedTodolist} onTodoClick={handleTodoClick} />
 
