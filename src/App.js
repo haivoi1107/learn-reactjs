@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { Redirect, Link, Route, Switch } from 'react-router-dom';
-import categoryApi from './api/categoryApi';
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import productApi from './api/productApi';
 import NotFound from './components/NotFound';
-import AlbumFeatur from './features/Album';
+import AlbumFeature from './features/Album';
+import Header from './features/Album/components/Header';
+import CounterFeature from './features/Counter';
 import TodoFeature from './features/Todo';
+
 
 function App() {
   useEffect(() => {
@@ -21,18 +23,16 @@ function App() {
 
   return (
     <div className="App">
-      Header
-      <p>
-        <Link to="/todos">Todo </Link>
-      </p>
-      <p>
-        <Link to="/album">Album </Link>
-      </p>
+      <Header />
+     
+      <AlbumFeature></AlbumFeature>
       <Switch>
         <Redirect from="/home" to="/" exact />
         <Redirect from="/post-list/:postId" to="/posts/:postId" exact />
+        <Route path="/" component={CounterFeature} exact/>
         <Route path="/todos" component={TodoFeature} />
-        <Route path="/album" component={AlbumFeatur} />
+
+        <Route path="/album" component={AlbumFeature} />
         <Route component={NotFound} />
       </Switch>
       Footer
