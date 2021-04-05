@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import productApi from './api/productApi';
+import Header from './components/Header';
 import NotFound from './components/NotFound';
 import AlbumFeature from './features/Album';
-import Header from './features/Album/components/Header';
 import CounterFeature from './features/Counter';
 import TodoFeature from './features/Todo';
 
