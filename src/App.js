@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import productApi from './api/productApi';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-     
+
       <AlbumFeature></AlbumFeature>
       <Switch>
         <Redirect from="/home" to="/" exact />
