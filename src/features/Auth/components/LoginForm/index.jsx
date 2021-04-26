@@ -36,34 +36,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-function RegisterForm(props) {
+function LoginForm(props) {
   const classes = useStyles();
 
-  const schema = yup.object().shape({
-    fullName: yup
-      .string()
-      .required('Please enter your full name.')
-      .test('should has at least two words', 'Please enter at least two words.', (value) => {
-        console.log('value', value);
-        return value.trim().split(' ').length >= 2;
-      }),
-    email: yup.string().required('Please enter your email.').email('Please enter a valid email address.'),
-    password: yup.string().required('Please enter your pass word.').min(6, 'Please enter at least six words.'),
-    retypePassword: yup
-      .string()
-      .required('Please enter your pass word field.')
-      .oneOf([yup.ref('password')], 'Password does not match.'),
+  const schema = yup.object().shape({  
+    identifier: yup.string().required('Please enter your email.').email('Please enter a valid email address.'),
+    password: yup.string().required('Please enter your pass word.'),   
   });
   const form = useForm({
     defaultValues: {
-      fullName: '',
-      email: '',
+      identifier: '',
       password: '',
-      retypePassword: '',
     },
     resolver: yupResolver(schema),
   });
@@ -86,22 +73,20 @@ function RegisterForm(props) {
       </Avatar>
 
       <Typography className={classes.title} component="h3" variant="h5">
-        Create An Account
+      Sign in
       </Typography>
 
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="fullName" label="Full Name" form={form} />
-        <InputField name="email" label="Email" form={form} />
+        <InputField name="identifier" label="Email" form={form} />
         <PasswordField name="password" label="Password" form={form} />
-        <PasswordField name="retypePassword" label="Retype Password" form={form} />
 
         <Button disabled={isSubmitting} type="submit" variant="contained" color="primary" fullWidth className={classes.submit} size="large">
           {/* Tại sao chỗ này cần type submit?? */}
-          Create an account
+          Sign in
         </Button>
       </form>
     </div>
   );
 }
 
-export default RegisterForm;
+export default LoginForm;
