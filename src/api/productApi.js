@@ -12,12 +12,12 @@ const productApi = {
         delete newParams._page;
 
         // Fetch procduct list + count 
-        const producList = await axiosClient.get('/products', {params: newParams});
-        const count = await axiosClient.get('/products.count', {params: newParams});
+        const productList = await axiosClient.get('/products', {params: newParams});
+        const count = await axiosClient.get('/products/count', {params: newParams});
         
         // Build respone and return
         return {
-            data:producList,
+            data:productList,
             pagination: {
               page:  params._page,
               limit: params._limit,
