@@ -12,7 +12,6 @@ ProductSkeletonList.defaultProps = {
 
 function ProductSkeletonList({length}) {
     console.log(length);
-    const test = Product
     return (
         <Box>
             <Grid container>
