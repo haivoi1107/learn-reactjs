@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         width: '250px'
     },
     right: {
-        flex: '1 1 auto'
+        flex: '1 1 0'
     }
 }))
 
