@@ -53,6 +53,7 @@ function ListPage(props) {
         console.log('Failed to fetch productList: ', error);
       }
       setLoading(false);
+      console.log('setloading', loading);
     })();
   }, [filters]);
 
@@ -73,7 +74,7 @@ function ListPage(props) {
   const handleFilterChange = (newFilters) => {
     setFilters((prevFilter) => ({
       ...prevFilter,
-      ... newFilters,
+      ...newFilters,
     }));
   };
 
@@ -84,17 +85,18 @@ function ListPage(props) {
           <Grid item className={classes.left}>
             <Paper elevation={0}>
               {/* <ProductFilter filters={filters} onChange={handleFilterChange}> */}
-              {loading ? <ProductSkeletonFilter length={7} /> : <ProductFilter filters={filters} onChange={handleFilterChange} />}
+              {loading ? (
+                <ProductSkeletonFilter length={7} />
+              ) : (
+                <ProductFilter filters={filters} onChange={handleFilterChange} />
+              )}
               {/* </ProductFilter> */}
-             
             </Paper>
           </Grid>
 
           <Grid item className={classes.right}>
             <Paper elevation={0}>
-              <ProductSort currenSort={filters._sort} onChange={handleSortChange}>
-
-              </ProductSort>
+              <ProductSort currenSort={filters._sort} onChange={handleSortChange}></ProductSort>
               {loading ? <ProductSkeletonList length={9} /> : <ProductList data={productList} />}
               <Box className={classes.pagination}>
                 <Pagination
