@@ -30,8 +30,40 @@ FilterByCategory.propTypes = {
 
 function FilterByCategory({ onChange }) {
   const classes = useStyle();
-  const [categoryList, setCategoryList] = useState([]);
-
+  const [categoryList, setCategoryList] = useState([
+    'Thời trang',
+    'Khẩu Trang',
+    'Làm đẹp',
+    'Laptop',
+    'ổ cứng',
+    'Điện thoại',
+  ]);
+  const Hai = [
+    {
+      id: 1,
+      title: 'Thời Trang',
+    },
+    {
+      id: 2,
+      title: 'Khẩu Trang',
+    },
+    {
+      id: 3,
+      title: 'Làm đẹp',
+    },
+    {
+      id: 4,
+      title: 'Laptop',
+    },
+    {
+      id: 5,
+      title: 'Ổ cứng',
+    },
+    {
+      id: 6,
+      title: 'Điện thoại',
+    },
+  ];
   useEffect(() => {
     (async () => {
       try {
@@ -57,12 +89,20 @@ function FilterByCategory({ onChange }) {
 
   return (
     <Box className={classes.root}>
-      <Typography variant="subtitle2">Danh mục sản phẩm</Typography>
+      {/* <Typography variant="subtitle2">Danh mục sản phẩm</Typography>
 
       <ul className={classes.menu}>
         {categoryList.map((category) => (
           <li key={category.id} onClick={() => handleCategoryClick(category)}>
             <Typography variant="body2">{category.name}</Typography>
+          </li>
+        ))}
+      </ul> */}
+      <Typography variant="subtitle2">Danh mục sản phẩm</Typography>
+      <ul className={classes.menu}>
+        {Hai.map((category) => (
+          <li key={category.id} onClick={() => handleCategoryClick(category)}>
+            <Typography variant="body2">{category.title}</Typography>
           </li>
         ))}
       </ul>

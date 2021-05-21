@@ -19,7 +19,7 @@ function App() {
       <Switch>
         <Redirect from="/home" to="/" exact />
         <Redirect from="/post-list/:postId" to="/posts/:postId" exact />
-        <Route path="/" component={CounterFeature} exact/>
+        <Route path="/" component={ProductFeatures} exact/>
         <Route path="/todos" component={TodoFeature} />
         <Route path="/album" component={AlbumFeature} />
         <Route path="/products" component={ProductFeatures} />
