@@ -18,6 +18,9 @@ import { logout } from '../../features/Auth/userSlice';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    position: 'sticky',
+    zIndex: 99,
+    top: 0,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -38,17 +41,17 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     color: 'white',
-  }
+  },
 }));
 
 const MODE = {
   LOGIN: 'login',
-  REGISTER: 'register'
+  REGISTER: 'register',
 };
 
 export default function Header() {
   const dispatch = useDispatch();
-  const loggedInUser = useSelector(state => state.user.current);
+  const loggedInUser = useSelector((state) => state.user.current);
   const isLoggedIn = !!loggedInUser.id;
   const [open, setOpen] = useState(false);
   const [mode, setmode] = useState(MODE.LOGIN);
@@ -64,17 +67,19 @@ export default function Header() {
 
   const handleUserClick = (e) => {
     setAnchorEl(e.currentTarget);
-  }
+  };
 
   const handleCloseMenu = (e) => {
     setAnchorEl(null);
-  }
+  };
 
-  const handleLougout = () => {{
-    const action = logout();
-    dispatch(action);
-    setAnchorEl(null);
-  }}
+  const handleLougout = () => {
+    {
+      const action = logout();
+      dispatch(action);
+      setAnchorEl(null);
+    }
+  };
 
   const classes = useStyles();
 
@@ -97,17 +102,16 @@ export default function Header() {
             <Button color="inherit">Album</Button>
           </NavLink>
           {!isLoggedIn && (
-             <Button color="inherit" onClick={handleClickOpen}>
-             Login
-           </Button>
+            <Button color="inherit" onClick={handleClickOpen}>
+              Login
+            </Button>
           )}
 
           {isLoggedIn && (
             <IconButton>
-              <AccountCircle className = {classes.icon} onClick={handleUserClick} />
+              <AccountCircle className={classes.icon} onClick={handleUserClick} />
             </IconButton>
           )}
-         
         </Toolbar>
       </AppBar>
 
@@ -128,7 +132,7 @@ export default function Header() {
       >
         <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
         <MenuItem onClick={handleLougout}>Logout</MenuItem>
-      </Menu>      
+      </Menu>
 
       <Dialog
         disableBackdropClick
@@ -137,34 +141,32 @@ export default function Header() {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <IconButton className = {classes.closeButton} onClick={handleClose}>
+        <IconButton className={classes.closeButton} onClick={handleClose}>
           <Close />
         </IconButton>
         <DialogContent>
           {mode === MODE.REGISTER && (
             <>
-              <Register closeDialog={handleClose}/>
+              <Register closeDialog={handleClose} />
               <Box textAlign="center">
                 <Button color="primary" onClick={() => setmode(MODE.LOGIN)}>
                   ALready have an account. Login here
                 </Button>
               </Box>
-              </>
+            </>
           )}
 
           {mode === MODE.LOGIN && (
             <>
-              <Login closeDialog={handleClose}/>
+              <Login closeDialog={handleClose} />
               <Box textAlign="center">
-                <Button color="primary" onClick={() =>setmode (MODE.REGISTER)}>
+                <Button color="primary" onClick={() => setmode(MODE.REGISTER)}>
                   Do not have an account. Register here
                 </Button>
               </Box>
-              </>
+            </>
           )}
-
         </DialogContent>
-
       </Dialog>
     </div>
   );
