@@ -1,6 +1,6 @@
 import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import productApi from '../../../api/productApi';
 import ProductList from '../components/ProductList';
 import ProductSkeletonList from '../components/ProductSkeletonList';
@@ -8,6 +8,9 @@ import Pagination from '@material-ui/lab/Pagination';
 import ProductSort from '../components/ProductSort';
 import ProductFilter from '../components/ProductFilter';
 import ProductSkeletonFilter from '../components/ProductSkeletonFilter';
+import FilterViewer from '../components/FilterViewer';
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,6 +32,22 @@ const useStyles = makeStyles((theme) => ({
 
 function ListPage(props) {
   const classes = useStyles();
+
+  const history = useHistory();
+  const location = useLocation();
+  const queryParams = useMemo(() => {
+    const params = queryString.parse(location.search);
+
+    return {
+      ...params,
+      _page: Number.parseInt(params._page) || 1,
+      _limit: Number.parseInt(params._limit) || 12,
+      _sort: params._sort || 'salePrice:ASC',
+      isPromotion: params.isPromotion === 'true',
+      isFreeShip: params.isFreeShip === 'true',
+    };
+  }, [location.search]);
+
   const [productList, setProductList] = useState([]);
   const [pagination, setPagination] = useState({
     limit: 12,
@@ -36,16 +55,33 @@ function ListPage(props) {
     page: 1,
   });
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
-    _page: 1,
-    _limit: 12,
-    _sort: 'salePrice:ASC',
-  });
+  // const [filters, setFilters] = useState({
+  //   _page: 1,
+  //   _limit: 12,
+  //   _sort: 'salePrice:ASC',
+  // });
+
+  // const [filters, setFilters] = useState(() => ({
+  //   ...queryParams,
+  //   _page: Number.parseInt(queryParams._page) || 1,
+  //   _limit: Number.parseInt(queryParams._limit) || 12,
+  //   _sort: queryParams._sort || 'salePrice:ASC',
+  // }));
+
+  // useEffect(() => {
+  //   // TODo: Sync filters to URL
+  //   console.log({ history });
+  //   console.log({ location });
+  //   history.push({
+  //     pathname: history.location.pathname,
+  //     search: queryString.stringify(filters),
+  //   });
+  // }, [history, filters]);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data, pagination } = await productApi.getAll(filters);
+        const { data, pagination } = await productApi.getAll(queryParams);
         setProductList(data);
         setPagination(pagination);
         console.log({ data, pagination });
@@ -55,27 +91,66 @@ function ListPage(props) {
       setLoading(false);
       console.log('setloading', loading);
     })();
-  }, [filters]);
+  }, [queryParams]);
 
   const handlePageChange = (e, page) => {
-    setFilters((prevFilter) => ({
-      ...prevFilter,
+    // setFilters((prevFilter) => ({
+    //   ...prevFilter,
+    //   _page: page,
+    // }));
+
+    const filters = {
+      ...queryParams,
       _page: page,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
   };
 
   const handleSortChange = (newSortValue) => {
-    setFilters((prevFilter) => ({
-      ...prevFilter,
+    // setFilters((prevFilter) => ({
+    //   ...prevFilter,
+    //   _sort: newSortValue,
+    // }));
+
+    const filters = {
+      ...queryParams,
       _sort: newSortValue,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
   };
 
   const handleFilterChange = (newFilters) => {
-    setFilters((prevFilter) => ({
-      ...prevFilter,
+    // setFilters((prevFilter) => ({
+    //   ...prevFilter,
+    //   ...newFilters,
+    // }));
+
+    const filters = {
+      ...queryParams,
       ...newFilters,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
+  };
+
+  const setNewFilters = (newFilters) => {
+    // setFilters(newFilters);
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(newFilters),
+    });
   };
 
   return (
@@ -88,7 +163,7 @@ function ListPage(props) {
               {loading ? (
                 <ProductSkeletonFilter length={7} />
               ) : (
-                <ProductFilter filters={filters} onChange={handleFilterChange} />
+                <ProductFilter filters={queryParams} onChange={handleFilterChange} />
               )}
               {/* </ProductFilter> */}
             </Paper>
@@ -96,7 +171,8 @@ function ListPage(props) {
 
           <Grid item className={classes.right}>
             <Paper elevation={0}>
-              <ProductSort currenSort={filters._sort} onChange={handleSortChange}></ProductSort>
+              <ProductSort currenSort={queryParams._sort} onChange={handleSortChange} />
+              <FilterViewer filters={queryParams} onChange={setNewFilters} />
               {loading ? <ProductSkeletonList length={9} /> : <ProductList data={productList} />}
               <Box className={classes.pagination}>
                 <Pagination
