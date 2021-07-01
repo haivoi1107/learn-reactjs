@@ -22,6 +22,9 @@ const useStyle = makeStyles((theme) => ({
       },
     },
   },
+  mau: {
+    color: 'black',
+  },
 }));
 
 FilterByCategory.propTypes = {
@@ -85,6 +88,7 @@ function FilterByCategory({ onChange }) {
     if (onChange) {
       onChange(category.id);
     }
+    console.log(category.id);
   };
 
   return (
@@ -101,7 +105,7 @@ function FilterByCategory({ onChange }) {
       <Typography variant="subtitle2">Danh mục sản phẩm</Typography>
       <ul className={classes.menu}>
         {Hai.map((category) => (
-          <li key={category.id} onClick={() => handleCategoryClick(category)}>
+          <li className={classes.mau} key={category.id} onClick={() => handleCategoryClick(category)}>
             <Typography variant="body2">{category.title}</Typography>
           </li>
         ))}
