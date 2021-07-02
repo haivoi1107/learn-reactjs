@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import InputField from '..//..//..//components/form-controls/InputField';
+import QuantityField from '../../../components/form-controls/QuantityField';
 
 AddToCartForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -12,7 +12,11 @@ AddToCartForm.propTypes = {
 
 function AddToCartForm({ onSubmit = null }) {
   const schema = yup.object().shape({
-    quantity: yup.number().min(1, 'Please enter at least 1').required('Please enter quantity'),
+    quantity: yup
+      .number()
+      .min(1, 'Minimum value is 1')
+      .required('Please enter quantity')
+      .typeError('Please enter a number'),
   });
   const form = useForm({
     defaultValues: {
@@ -28,11 +32,11 @@ function AddToCartForm({ onSubmit = null }) {
   };
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)}>
-      <InputField name="quantity" label="Quantity" form={form} />
+      <QuantityField name="quantity" label="Quantity" form={form} />
 
-      <Button type="submit" variant="contained" color="primary" fullWidth size="large">
+      <Button type="submit" variant="contained" color="primary" style={{ width: '200px' }} size="large">
         {/* Tại sao chỗ này cần type submit?? */}
-        Chọn mua sản phẩm
+        Add to cart
       </Button>
     </form>
   );
