@@ -32,7 +32,7 @@ function AddToCartForm({ onSubmit = null }) {
 
       <Button type="submit" variant="contained" color="primary" fullWidth size="large">
         {/* Tại sao chỗ này cần type submit?? */}
-        Chọn mua
+        Chọn mua sản phẩm
       </Button>
     </form>
   );
